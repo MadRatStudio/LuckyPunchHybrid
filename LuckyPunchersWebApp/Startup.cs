@@ -12,6 +12,8 @@ using MRDbIdentity.Infrastructure.Interface;
 using MRDbIdentity.Service;
 using Microsoft.IdentityModel.Tokens;
 using Manager.Options;
+using Microsoft.AspNetCore.Http;
+using Infrastructure.Entities;
 
 namespace LuckyPunchersWebApp
 {
@@ -53,13 +55,15 @@ namespace LuckyPunchersWebApp
                 .AddDefaultTokenProviders();
 
             // Identity Services
-            services.AddTransient<IUserStore<User>, UserRepository>();
+            services.AddTransient<IUserStore<AppUser>, UserRepository<AppUser>>();
             services.AddTransient<IRoleStore<Role>, RoleRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserRepository<AppUser>, UserRepository<AppUser>>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<SignInManager<User>>();
             services.AddTransient(x => AppUserManager.Create(new MongoClient(Configuration["ConnectionStrings:Default"]).GetDatabase(Configuration["Database:Name"])));
             services.AddTransient(x => new MongoClient(Configuration["ConnectionStrings:Default"]).GetDatabase(Configuration["Database:Name"]));
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // managers
             services.AddTransient<AccountManager>();

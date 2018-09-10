@@ -19,11 +19,13 @@ namespace LuckyPunchersWebApp.Controllers
             _accountManager = accountManager;
         }
 
+        [Route("anonimus")]
         public IActionResult Anonimus()
         {
             return Ok("Anonimusu");
         }
 
+        [Route("auth")]
         [Authorize]
         public IActionResult Auth()
         {

@@ -5,9 +5,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Dal;
+using Infrastructure.Entities;
 using Infrastructure.Model.Common;
 using Infrastructure.Model.User;
 using Manager.Options;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using MRDbIdentity.Infrastructure.Interface;
 using MRDbIdentity.Service;
@@ -16,7 +18,7 @@ namespace Manager
 {
     public class UserManager : BaseManager
     {
-        public UserManager(AppUserManager appUserManager, IUserRepository userRepository, IRoleRepository roleRepository) : base(appUserManager, userRepository, roleRepository)
+        public UserManager(IHttpContextAccessor httpContextAccessor, AppUserManager appUserManager, IUserRepository<AppUser> userRepository, IRoleRepository roleRepository) : base(httpContextAccessor, appUserManager, userRepository, roleRepository)
         {
         }
 
@@ -50,7 +52,7 @@ namespace Manager
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
             };
 
             foreach(var role in roles)

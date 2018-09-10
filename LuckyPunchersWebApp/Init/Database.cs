@@ -1,4 +1,5 @@
 ﻿using Dal;
+using Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using MRDbIdentity.Domain;
@@ -24,11 +25,11 @@ namespace LuckyPunchersWebApp.Init
             }
         };
 
-        private static Dictionary<string, User> Users = new Dictionary<string, User>
+        private static Dictionary<string, AppUser> Users = new Dictionary<string, AppUser>
         {
             {
                 "Tf27324_()_",
-                new User
+                new AppUser
                 {
                     Birthday = new DateTime(1995, 3, 20, 0, 0, 0, 0, DateTimeKind.Local),
                     FirstName = "Oleh",
@@ -55,7 +56,7 @@ namespace LuckyPunchersWebApp.Init
 
         public static async Task Seed(IServiceProvider service)
         {
-            var userRepository = service.GetRequiredService<IUserStore<User>>();
+            var userRepository = service.GetRequiredService<IUserStore<AppUser>>();
             var roleRepository = service.GetRequiredService<IRoleStore<Role>>();
             var userManager = service.GetRequiredService<AppUserManager>();
 
